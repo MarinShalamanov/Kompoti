@@ -29,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
 
     long lastFruitAddedAt = -1;
 
+    int[] fruitIds = {R.drawable.apple, R.drawable.apricot, R.drawable.banana, R.drawable.cherry,
+    R.drawable.grape, R.drawable.lemon, R.drawable.orange, R.drawable.pear, R.drawable.strawberry};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +81,9 @@ public class MainActivity extends AppCompatActivity {
 
         ImageView aFruit = new ImageView(this);
 
-        aFruit.setImageDrawable(getResources().getDrawable(R.drawable.apple));
+        Random random =  new Random();
+        int randomFruitImageId = fruitIds[random.nextInt(fruitIds.length)];
+        aFruit.setImageDrawable(getResources().getDrawable(randomFruitImageId));
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(150, 150);
         params.topMargin = 10;
 
@@ -87,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         display.getSize(size);
         int displayWidth = size.x;
 
-        params.leftMargin = new Random().nextInt((int) (displayWidth * 0.8)) + (int) (displayWidth * 0.1);
+        params.leftMargin = random.nextInt((int) (displayWidth * 0.8)) + (int) (displayWidth * 0.1);
 
         layout.addView(aFruit, params);
         fruit.add(aFruit);
@@ -99,14 +104,22 @@ public class MainActivity extends AppCompatActivity {
     void updateFruit() {
         RelativeLayout.LayoutParams jarParams = (RelativeLayout.LayoutParams) jar.getLayoutParams();
 
-        for (ImageView aFruit : fruit) {
+        for (int i = 0; i < fruit.size(); i++) {
+            ImageView aFruit = fruit.get(i);
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) aFruit.getLayoutParams();
             params.topMargin += SPEED_OF_FALLING;
             aFruit.setLayoutParams(params);
-//
-//            if (params.topMargin > jarParams.topMargin) {
-//                aFruit.setVisibility(View.GONE);
-//            }
+
+            int location[] = new int[2];
+            jar.getLocationInWindow(location);
+
+
+            if (params.topMargin > location[1]) {
+                layout.removeView(aFruit);
+                fruit.remove(i);
+                i--;
+                Log.e(getClass().toString(), "here");
+            }
         }
     }
 
