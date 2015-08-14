@@ -4,13 +4,33 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 public class MainActivity extends AppCompatActivity {
+
+    View jar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        jar = findViewById(R.id.jar);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        float x = event.getX();
+        float y = event.getY();
+
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) jar.getLayoutParams(); //new RelativeLayout.LayoutParams(150, 150);
+        params.leftMargin = (int)x - params.width/2;
+        jar.setLayoutParams(params);
+
+        return super.onTouchEvent(event);
     }
 
     @Override
