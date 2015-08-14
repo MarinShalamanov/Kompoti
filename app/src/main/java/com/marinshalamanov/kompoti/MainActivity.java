@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     List<ImageView> fruit;
 
-    final int SPEED_OF_FALLING = 3;
+    final int SPEED_OF_FALLING = 10;
     int addFruitOnEachMs = 2000;
 
     long lastFruitAddedAt = -1;
@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     void addFruit() {
 
         ImageView aFruit = new ImageView(this);
+
         aFruit.setImageDrawable(getResources().getDrawable(R.drawable.apple));
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(150, 150);
         params.topMargin = 10;
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
         layout.addView(aFruit, params);
         fruit.add(aFruit);
+        jar.bringToFront();
 
         lastFruitAddedAt = System.currentTimeMillis();
     }
